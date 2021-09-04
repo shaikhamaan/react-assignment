@@ -1,3 +1,54 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .App {
-    text-align: center;
+  margin: 100px auto;
+  width: 35%;
+  border: 1px solid black;
+}
+
+.App h1 {
+  text-align: center;
+  padding: 5px;
+}
+
+.App .Frames,
+.App .Buttons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 0%;
+}
+
+.Frames > div {
+  flex-basis: 50%;
+  border-color: black;
+  padding: 10px;
+  border-top: 1px solid;
+}
+
+.Buttons > button {
+  flex-basis: 47.9%;
+  padding: 5px;
+  margin: 5px;
+}
+
+.Buttons {
+    padding: 5px;
+}
+
+.Frames > div:nth-child(odd) {
+  border-right: 1px solid;
+}
+
+.Frames > div:nth-child(3) {
+  border-bottom: 1px solid;
+}
+
+.Frames > div:nth-child(4) {
+  border-bottom: 1px solid;
 }
