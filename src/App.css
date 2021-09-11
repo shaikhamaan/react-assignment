@@ -24,6 +24,10 @@
   margin: 0%;
 }
 
+.Buttons {
+  justify-content: space-between;
+}
+
 .Frames > div {
   flex-basis: 50%;
   border-color: black;
@@ -31,8 +35,12 @@
   border-top: 1px solid;
 }
 
+.frame div {
+  padding: 3px 0px;
+}
+
 .Buttons > button {
-  flex-basis: 47.9%;
+  flex-basis: 46.9%;
   width: auto;
   padding: 5px;
   margin: 5px;

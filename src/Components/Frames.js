@@ -39,7 +39,7 @@ export default function Frames(props) {
   }, []);
 
   return (
-    <div>
+    <div className="frame">
       <div>
         <h4>Start:&nbsp;</h4>
         {prop.start[props.api.id - 1].start}
