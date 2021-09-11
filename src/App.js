@@ -30,49 +30,29 @@ export default function App() {
   const [saveStart, setSaveStart] = useState(startSaveData);
   const [saveEnd, setSaveEnd] = useState(endSaveData);
 
+  // making an obj to pass as props in frame
+  const obj = {
+    db: db,
+    start: start,
+    end: end,
+    setStart: setStart,
+    setEnd: setEnd,
+    saveStart: saveStart,
+    saveEnd: saveEnd,
+    setSaveStart: setSaveStart,
+    setSaveEnd: setSaveEnd,
+  };
+
   // updates start time after clicking the button
-  const getStartUpdate = (id) => {
-    setStart(
-      start.map((data) => {
+  const getUpdate = (id, place, setPlace, time) => {
+    console.log(time);
+    setPlace(
+      place.map((data) => {
         const date = new Date();
         if (data.id === id)
-          data.start = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}`;
-        return { ...data };
-      })
-    );
-  };
-
-  // updates start save time after clicking the button
-  const getStartSaveUpdate = (id) => {
-    setSaveStart(
-      saveStart.map((data) => {
-        const date = new Date();
-        if (data.id === id)
-          data.start = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}`;
-        return { ...data };
-      })
-    );
-  };
-
-  // updates end time after clicking the button
-  const getEndUpdate = (id) => {
-    setEnd(
-      end.map((data) => {
-        const date = new Date();
-        if (data.id === id)
-          data.end = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}`;
-        return { ...data };
-      })
-    );
-  };
-
-  // updates end save time after clicking the button
-  const getEndSaveUpdate = (id) => {
-    setSaveEnd(
-      saveEnd.map((data) => {
-        const date = new Date();
-        if (data.id === id)
-          data.end = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}`;
+          data[
+            time
+          ] = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}`;
         return { ...data };
       })
     );
@@ -80,15 +60,17 @@ export default function App() {
 
   // function to the apis for updating
   async function updateApi(id) {
-    getStartUpdate(id);
+    // start and end time
+    getUpdate(id, start, setStart, "start");
     const api = apiList[id - 1];
-    const url = api.url;
-    const response = await fetch(url);
+    const response = await fetch(api.url);
     const data = await response.json();
-    getEndUpdate(id);
-    getStartSaveUpdate(id);
+    getUpdate(id, end, setEnd, "end");
+
+    // saveStart and saveEnd time
+    getUpdate(id, saveStart, setSaveStart, "saveStart");
     db.responses.add({ data: data });
-    getEndSaveUpdate(id);
+    getUpdate(id, saveEnd, setSaveEnd, "saveEnd");
   }
 
   return (
@@ -96,26 +78,12 @@ export default function App() {
       <h1>Test App</h1>
       <div className="Frames">
         {apiList.map((api) => {
-          return (
-            <Frames
-              key={api.id}
-              api={api}
-              db={db}
-              start={start}
-              end={end}
-              setStart={setStart}
-              setEnd={setEnd}
-              saveStart={saveStart}
-              saveEnd={saveEnd}
-              setSaveEnd={setSaveEnd}
-              setSaveStart={setSaveStart}
-            />
-          );
+          return <Frames key={api.id} api={api} obj={obj} />;
         })}
       </div>
       <div className="Buttons">
         {apiList.map((api) => {
-          return <Buttons key={api.id} props={api} updateApi={updateApi} />;
+          return <Buttons key={api.id} api={api} updateApi={updateApi} />;
         })}
       </div>
     </div>

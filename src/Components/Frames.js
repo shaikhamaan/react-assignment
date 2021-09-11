@@ -2,68 +2,39 @@ import React from "react";
 import { useEffect } from "react";
 
 export default function Frames(props) {
+  // destructured imp props
+  const prop = props.obj;
+
   // sets the start time
-  const getStartTime = () => {
-    props.setStart(
-      props.start.map((data) => {
+  const getTime = (place, setPlace, time) => {
+    setPlace(
+      place.map((data) => {
         const date = new Date();
         if (data.id === props.api.id)
-          data.start = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}`;
+          data[
+            time
+          ] = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}`;
         return { ...data };
       })
     );
   };
-
-  // sets the start save time
-  const getSaveStartTime = () => {
-    props.setSaveStart(
-      props.saveStart.map((data) => {
-        const date = new Date();
-        if (data.id === props.api.id)
-          data.start = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}`;
-        return { ...data };
-      })
-    );
-  };
-
-  // sets the end time
-  const getEndTime = () => {
-    props.setEnd(
-      props.end.map((data) => {
-        const date = new Date();
-        if (data.id === props.api.id)
-          data.end = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}`;
-        return { ...data };
-      })
-    );
-  };
-
-  // sets the end save time
-  const getSaveEndTime = () => {
-    props.setSaveEnd(
-      props.saveEnd.map((data) => {
-        const date = new Date();
-        if (data.id === props.api.id)
-          data.end = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}`;
-        return { ...data };
-      })
-    );
-  };
-
 
   // useEffect to call api function during the component mouting
   useEffect(() => {
     // settimeout to delay the api calling
     setTimeout(async () => {
-      getStartTime();
+      // getting start and end time
+      getTime(prop.start, prop.setStart, "start");
       const api = props["api"];
       const url = api.url;
       const response = await fetch(url);
       const data = await response.json();
-      getEndTime();
-      getSaveStartTime();
-      props.db.responses.add({ data: data });
-      getSaveEndTime();
+      getTime(prop.end, prop.setEnd, "end");
+
+      // getting saveStart and saveEnd time
+      getTime(prop.saveStart, prop.setSaveStart, "saveStart");
+      prop.db.responses.add({ data: data });
+      getTime(prop.saveEnd, prop.setSaveEnd, "saveEnd");
     }, 5000);
   }, []);
 
@@ -71,19 +42,19 @@ export default function Frames(props) {
     <div>
       <div>
         <h4>Start:&nbsp;</h4>
-        {props.start[props.api.id - 1].start}
+        {prop.start[props.api.id - 1].start}
       </div>
       <div>
         <h4>End:&nbsp;</h4>
-        {props.end[props.api.id - 1].end}
+        {prop.end[props.api.id - 1].end}
       </div>
       <div>
         <h4>Start Save:&nbsp;</h4>
-        {props.saveStart[props.api.id - 1].start}
+        {prop.saveStart[props.api.id - 1].saveStart}
       </div>
       <div>
         <h4>End Save:&nbsp;</h4>
-        {props.saveEnd[props.api.id - 1].end}
+        {prop.saveEnd[props.api.id - 1].saveEnd}
       </div>
     </div>
   );

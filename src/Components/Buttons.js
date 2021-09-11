@@ -4,9 +4,9 @@ export default function Buttons(props) {
 
   // click handler to update the frames component of respective id
   const handleClick = (e) => {
-    props.updateApi(props["props"].id);
     e.preventDefault();
+    props.updateApi(props["props"].id);
   };
 
-  return <button onClick={handleClick}>Button {props["props"].id}</button>;
+  return <button onClick={handleClick}>Button {props["api"].id}</button>;
 }
